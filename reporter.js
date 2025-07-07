@@ -1,5 +1,10 @@
 class MetricReporter {
   async onRunComplete(_testContexts, results) {
+    if (results.coverageMap) {
+      console.log('> results.coverageMap is already set:', results.coverageMap)
+      return
+    }
+    
     console.log(
       '> Starting in Jest 28, custom reporters run BEFORE the built-in CoverageReporter.'
     )
@@ -10,7 +15,7 @@ class MetricReporter {
     const waitForCoverageInterval = setInterval(() => {
       if (!results.coverageMap) return
 
-      console.log('> Got results from CoverageReporter!')
+      console.log('> Got results from CoverageReporter after polling!')
       console.log('>', results.coverageMap.getCoverageSummary().toJSON().lines)
       clearInterval(waitForCoverageInterval)
     }, 200)
